@@ -1,0 +1,37 @@
+.register-container{
+  display: flex;
+  justify-content: center; 
+  align-items: center;    
+  height: 100vh;           
+  background-color: whitesmoke;
+  
+}
+.inner-box{
+  padding-left: 20px;
+  padding-right: 40px;
+  background-color: white;
+  border-radius: 10px;
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  width: fit-content;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+body{
+  background-color: whitesmoke;
+}
+.register-form{
+  display:flex;
+  flex-direction: column;
+  width: 300px;
+  
+}
+.menu-nav a{
+  background: darkgray;
+  align-items: center;
+  padding: 10px 40px;
+  color: white;
+  margin: 0 10px;
+  
+}

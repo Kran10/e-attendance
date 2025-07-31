@@ -1,8 +1,15 @@
 import'./Input.css';
 
-function Input({type='text', placeholder, value, onChange}){
+function Input({type='text', name, placeholder, value, onChange}){
     return(
-        <input className="custom-input" type={type} placeholder={placeholder} value={value} onChange={onChange}/>
+        <input 
+        name={name}
+        className="custom-input" 
+        type={type} 
+        placeholder={placeholder} 
+        value={value} 
+        onChange={onChange}
+        />
     );
 }
 export default Input;

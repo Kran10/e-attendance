@@ -1,9 +1,8 @@
 import {useState} from 'react';
 import Input from './Input';
-// import axios from 'axios';
 
 function Register(){
-    const[user, setUser]=useState({username: "", email: "", password:""});
+    const[user, setUser]=useState({username: "", email: "", password:"" ,repassword:""});
     const [message, setMessage]=useState("");
 
     const handleChange=e=>{
@@ -21,21 +20,42 @@ function Register(){
     return(
         
         <div className='register-container'>
-            <div className="inner-box">
+            <div className="form-wrapper">
                 <h2>Register</h2>
             <form className="register-form" onSubmit={handleSubmit}>
-                {/* <input name="username" placeholder='Username' onChange={handleChange} required/><br/><br/>
-                <input name="email" type="email" placeholder="Email" onChange={handleChange} required/><br/><br/>
-                <input name="password" type="password" placeholder='password' onChange={handleChange} required/><br/><br/>
-                <input name="password" type="password" placeholder='re-enter password' onChange={handleChange} required/><br/><br/> */}
-                <Input placeholder={"Name"}/>
-                <Input type="email" placeholder="Email"/>
-                <Input type="password" placeholder="Password"/>
-                <Input type="password" placeholder="Re-enter password"/>
-                <Input type="button" value="Register"/>
+                <Input 
+                name="username"
+                placeholder="Username"
+                value={user.username}
+                onChange={handleChange}/>
+
+                <Input 
+                name="email"
+                type="email"
+                placeholder="Email"
+                value={user.email}
+                onChange={handleChange}/>
+
+                <Input 
+                name="password"
+                type="password"
+                placeholder="Password"
+                value={user.password}
+                onChange={handleChange}/>
+
+                <Input 
+                name="repassword"
+                type="password"
+                placeholder="Confirm Password"
+                value={user.repassowrd}
+                onChange={handleChange}/>
+
+                <button className="custom-button">Submit</button>
+
             </form>
+            
+            {message && <p className="message">{message}</p>}
             </div>
-            <p>{message}</p>
         </div>
     );
 

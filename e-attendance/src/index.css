@@ -1,37 +1,60 @@
-.register-container{
-  display: flex;
-  justify-content: center; 
-  align-items: center;    
-  height: 100vh;           
+* {
+  box-sizing: border-box;
+}
+
+body {
   background-color: whitesmoke;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
   
 }
-.inner-box{
-  padding-left: 20px;
-  padding-right: 40px;
-  background-color: white;
-  border-radius: 10px;
-  display:flex;
-  flex-direction: column;
+
+.form-wrapper {
+  display: flex;
+  justify-content: center;
   align-items: center;
-  width: fit-content;
+  flex-direction: column;
+  background-color: lightgrey;
+  padding: 30px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 400px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-body{
-  background-color: whitesmoke;
-}
-.register-form{
-  display:flex;
+.register-form {
+  display: flex;
   flex-direction: column;
-  width: 300px;
-  
+  width: 100%;
 }
-.menu-nav a{
-  background: darkgray;
-  align-items: center;
-  padding: 10px 40px;
+
+.custom-button {
+  width: 100%;
+  display: block;
+  padding: 12px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  background-color: darkred;
   color: white;
-  margin: 0 10px;
-  
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s;
+}
+
+.custom-button:hover {
+  background-color: #ddd;
+}
+
+.message {
+  margin-top: 15px;
+  font-weight: bold;
 }

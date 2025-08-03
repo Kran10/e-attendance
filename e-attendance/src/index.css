@@ -1,6 +1,23 @@
 * {
   box-sizing: border-box;
 }
+.menu-nav{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: darkred;
+  padding: 20px;
+
+}
+.menu-nav a{
+  text-decoration: none;
+  font-weight:bolder;
+  color: white;
+  
+}
+.info-message{
+  color: darkred;
+}
 
 body {
   background-color: whitesmoke;
@@ -42,7 +59,7 @@ body {
   font-weight: bold;
   border: none;
   border-radius: 8px;
-  background-color: darkred;
+  background-color: red;
   color: white;
   font-size: 16px;
   cursor: pointer;
@@ -51,7 +68,7 @@ body {
 }
 
 .custom-button:hover {
-  background-color: #ddd;
+  background-color: darkred;
 }
 
 .message {

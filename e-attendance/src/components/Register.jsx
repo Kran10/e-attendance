@@ -1,41 +1,113 @@
-import {useState} from 'react';
+import React, {useState} from 'react';
+import {useForm} from 'react-hook-form';
+import axios from 'axios';
 import Input from './Input';
-// import axios from 'axios';
+import { Link } from 'react-router-dom';
+
 
 function Register(){
-    const[user, setUser]=useState({username: "", email: "", password:""});
+    const{
+        register,
+        handleSubmit,
+        formState:{errors},
+        trigger,
+        watch
+    }=useForm();
+
+    const password=watch('password');
+    const confirmPassword=watch("repassword");
+    
+    const onSubmit=async (data)=>{
+        if(data.password!==data.repassword){
+        }
+        try{
+            const res=await axios.post('http://localhost:8080/api/users/register', data);
+            alert("Registration successful");
+        }catch(err){
+            alert("Error: "+err.response?.data||"Could not register");
+        };
+    }
+    const[user, setUser]=useState({username: "", email: "", password:"" ,repassword:""});
     const [message, setMessage]=useState("");
 
     const handleChange=e=>{
         setUser({...user, [e.target.name]:e.target.value});
     };
-    const handleSubmit=async e=>{
-        e.preventDefault();
-        try{
-            const res=await axios.post('http://localhost:8080/api/users/register', user);
-            setMessage("Registration successful");
-        }catch(err){
-            setMessage("Error: "+err.response?.data||"Could not register");
-        }
-    };
+    
     return(
         
         <div className='register-container'>
-            <div className="inner-box">
+            <div className="form-wrapper">
                 <h2>Register</h2>
-            <form className="register-form" onSubmit={handleSubmit}>
-                {/* <input name="username" placeholder='Username' onChange={handleChange} required/><br/><br/>
-                <input name="email" type="email" placeholder="Email" onChange={handleChange} required/><br/><br/>
-                <input name="password" type="password" placeholder='password' onChange={handleChange} required/><br/><br/>
-                <input name="password" type="password" placeholder='re-enter password' onChange={handleChange} required/><br/><br/> */}
-                <Input placeholder={"Name"}/>
-                <Input type="email" placeholder="Email"/>
-                <Input type="password" placeholder="Password"/>
-                <Input type="password" placeholder="Re-enter password"/>
-                <Input type="button" value="Register"/>
+            <form className="register-form" onSubmit={handleSubmit(onSubmit)}>
+                <Input 
+                name="username"
+                placeholder="Username"
+                {...register("username",{
+                    required: "Username is required",
+                    onblur:()=>trigger("username"),
+                })}
+                error={errors.username?.message}
+                value={user.username}
+                onChange={handleChange}/>
+
+                <Input 
+                name="email"
+                type="email"
+                placeholder="Email"
+                {...register("email",{
+                    required: "Email is required",
+                    pattern:{
+                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                        message: "Invalid email format"
+                    },
+                    onBlur:()=>trigger("email"),
+                })}
+                error={errors.email?.message}
+                value={user.email}
+                onChange={handleChange}/>
+
+                <Input 
+                name="password"
+                type="password"
+                placeholder="Password"
+                {...register("password",{
+                    required: "Password is required",
+                    minLength: {
+                        value:6,
+                        message: "Password must be at least 6 characters"
+                    },
+                    onBlur:()=>trigger("password")
+                })}
+                error={errors.password?.message}
+                value={user.password}
+                onChange={handleChange}/>
+
+                <Input 
+                name="repassword"
+                type="password"
+                {...register("repassword",{
+                    required: "Please confirm your password",
+                    onBlur: ()=>trigger("repassword"),
+                })}
+                error={errors.repassword?.message}
+                placeholder="Confirm Password"
+                value={user.repassword}
+                onChange={handleChange}
+                />
+                {confirmPassword && password && (
+                <p style={{ color: password === confirmPassword ? 'darkgreen' : 'red', fontWeight: 'bold'}}>
+                    {password === confirmPassword ? 'Password is matched' : 'Passwords do not match'}
+                </p>
+                )}
+
+                <button className="custom-button">Submit</button>
+                <p className="info-message">Already have an account? <Link to="/login" style={{color: 'darkred', textDecoration: 'none', fontWeight:'bold'}}>Login</Link></p>
+
             </form>
+
+            {message && <p className="message">{message}</p>}
             </div>
-            <p>{message}</p>
         </div>
     );
 

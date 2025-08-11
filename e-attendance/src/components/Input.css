@@ -12,3 +12,7 @@
 .custom-input:focus {
   outline: ghostwhite;
 }
+.error-text{
+  color:red;
+  height: 15px;
+}

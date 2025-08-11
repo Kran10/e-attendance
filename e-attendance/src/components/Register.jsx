@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+ import {useState} from 'react';
 import {useForm} from 'react-hook-form';
 import axios from 'axios';
 import Input from './Input';
@@ -18,8 +18,6 @@ function Register(){
     const confirmPassword=watch("repassword");
     
     const onSubmit=async (data)=>{
-        if(data.password!==data.repassword){
-        }
         try{
             const res=await axios.post('http://localhost:8080/api/users/register', data);
             alert("Registration successful");
@@ -33,6 +31,7 @@ function Register(){
     const handleChange=e=>{
         setUser({...user, [e.target.name]:e.target.value});
     };
+    const[showPassword,setShowPassword]=useState(false);
     
     return(
         
@@ -54,6 +53,8 @@ function Register(){
                 <Input 
                 name="email"
                 type="email"
+                showPassword={showPassword}
+                setShowPassword={setShowPassword}
                 placeholder="Email"
                 {...register("email",{
                     required: "Email is required",
@@ -70,6 +71,8 @@ function Register(){
                 <Input 
                 name="password"
                 type="password"
+                showPassword={showPassword}
+                setShowPassword={setShowPassword}
                 placeholder="Password"
                 {...register("password",{
                     required: "Password is required",
@@ -90,6 +93,8 @@ function Register(){
                     required: "Please confirm your password",
                     onBlur: ()=>trigger("repassword"),
                 })}
+                showPassword={showPassword}
+                setShowPassword={setShowPassword}
                 error={errors.repassword?.message}
                 placeholder="Confirm Password"
                 value={user.repassword}
@@ -110,6 +115,6 @@ function Register(){
             </div>
         </div>
     );
-
 }
+
 export default Register;

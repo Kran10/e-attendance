@@ -1,19 +1,38 @@
 import'./Input.css';
+import { EyeInvisibleOutlined, EyeOutlined } from '@ant-design/icons';
+import {useState} from 'react';
 
-function Input({type='text', name, error,  placeholder, repassword, value, onChange, ...rest}){
+function Input({type='text', name, error,  showPassword, setShowPassword, placeholder, value, onChange, ...rest}){
+    
+    
+    const isPasswordField=name.toLowerCase()==="password" || name.toLowerCase()==="repassword";
+    const togglePassword=()=>setShowPassword((val)=>!val);
     return(
-        <div style={{marginBottom: '10px'}}>
-        <input 
+        <div 
+        className='input-container'>
+        <input
         name={name}
         className="custom-input" 
-        type={type} 
+        type={isPasswordField && !showPassword?"password":"text"} 
         placeholder={placeholder} 
         value={value} 
-        repassword={repassword}
         onChange={onChange}
         {...rest}
+        
         />
-        {error && <small style={{color: 'red'}}>{error}</small>}
+        
+        {isPasswordField && (
+        <span
+        
+        className='password-toggle'
+          onClick={togglePassword}
+        >
+          {showPassword ? <EyeInvisibleOutlined /> : <EyeOutlined />}
+        </span>
+      )}
+        <div className='error-text'>
+            {error?error:'\u00A0'}
+        </div>
         </div>
     );
 }

@@ -1,120 +1,156 @@
- import {useState} from 'react';
-import {useForm} from 'react-hook-form';
-import axios from 'axios';
-import Input from './Input';
-import { Link } from 'react-router-dom';
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import Input from "./Input"; // your custom Input component
 
+function Register() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    trigger,
+    watch,
+  } = useForm();
 
-function Register(){
-    const{
-        register,
-        handleSubmit,
-        formState:{errors},
-        trigger,
-        watch
-    }=useForm();
+  const password = watch("password");
+  const confirmPassword = watch("repassword");
 
-    const password=watch('password');
-    const confirmPassword=watch("repassword");
-    
-    const onSubmit=async (data)=>{
-        try{
-            const res=await axios.post('http://localhost:8080/api/users/register', data);
-            alert("Registration successful");
-        }catch(err){
-            alert("Error: "+err.response?.data||"Could not register");
+  const [user, setUser] = useState({
+    username: "",
+    email: "",
+    password: "",
+    repassword: "",
+  });
+
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false); //  loading state
+  const [showPassword, setShowPassword] = useState(false);
+
+  const navigate = useNavigate(); //  for redirect
+
+  const handleChange = (e) => {
+    setUser({ ...user, [e.target.name]: e.target.value });
+  };
+
+  const onSubmit = async (data) => {
+    setLoading(true);
+    try {
+        const payload={
+            username: data.username,
+            email:data.email,
+            password:data.password,
         };
+      const res=await axios.post("http://localhost:8080/api/users/register", payload);
+      console.log(res.data);
+      setMessage("✅ Registration successful");
+      setTimeout(() => {
+        navigate("/login"); // redirect after success
+      }, 1500);
+    } catch (err) {
+      setMessage("❌ " + (err.response?.data || "Could not register"));
+    } finally {
+      setLoading(false);
     }
-    const[user, setUser]=useState({username: "", email: "", password:"" ,repassword:""});
-    const [message, setMessage]=useState("");
+  };
 
-    const handleChange=e=>{
-        setUser({...user, [e.target.name]:e.target.value});
-    };
-    const[showPassword,setShowPassword]=useState(false);
-    
-    return(
-        
-        <div className='register-container'>
-            <div className="form-wrapper">
-                <h2>Register</h2>
-            <form className="register-form" onSubmit={handleSubmit(onSubmit)}>
-                <Input 
-                name="username"
-                placeholder="Username"
-                {...register("username",{
-                    required: "Username is required",
-                    onblur:()=>trigger("username"),
-                })}
-                error={errors.username?.message}
-                value={user.username}
-                onChange={handleChange}/>
+  return (
+    <div className="register-container">
+      <div className="form-wrapper">
+        <h2>Register</h2>
+        <form className="register-form" onSubmit={handleSubmit(onSubmit)}>
+          <Input
+            name="username"
+            placeholder="Username"
+            {...register("username", {
+              required: "Username is required",
+              onBlur: () => trigger("username"),
+            })}
+            error={errors.username?.message}
+           
+          />
 
-                <Input 
-                name="email"
-                type="email"
-                showPassword={showPassword}
-                setShowPassword={setShowPassword}
-                placeholder="Email"
-                {...register("email",{
-                    required: "Email is required",
-                    pattern:{
-                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                        message: "Invalid email format"
-                    },
-                    onBlur:()=>trigger("email"),
-                })}
-                error={errors.email?.message}
-                value={user.email}
-                onChange={handleChange}/>
+          <Input
+            name="email"
+            type="email"
+            placeholder="Email"
+            {...register("email", {
+              required: "Email is required",
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: "Invalid email format",
+              },
+              onBlur: () => trigger("email"),
+            })}
+            error={errors.email?.message}
+           
+          />
 
-                <Input 
-                name="password"
-                type="password"
-                showPassword={showPassword}
-                setShowPassword={setShowPassword}
-                placeholder="Password"
-                {...register("password",{
-                    required: "Password is required",
-                    minLength: {
-                        value:6,
-                        message: "Password must be at least 6 characters"
-                    },
-                    onBlur:()=>trigger("password")
-                })}
-                error={errors.password?.message}
-                value={user.password}
-                onChange={handleChange}/>
+          <Input
+            name="password"
+            type="password"
+            placeholder="Password"
+            showPassword={showPassword}
+            setShowPassword={setShowPassword}
+            {...register("password", {
+              required: "Password is required",
+              minLength: { value: 6, message: "Min 6 characters" },
+              onBlur: () => trigger("password"),
+            })}
+            error={errors.password?.message}
+           
+          />
 
-                <Input 
-                name="repassword"
-                type="password"
-                {...register("repassword",{
-                    required: "Please confirm your password",
-                    onBlur: ()=>trigger("repassword"),
-                })}
-                showPassword={showPassword}
-                setShowPassword={setShowPassword}
-                error={errors.repassword?.message}
-                placeholder="Confirm Password"
-                value={user.repassword}
-                onChange={handleChange}
-                />
-                {confirmPassword && password && (
-                <p style={{ color: password === confirmPassword ? 'darkgreen' : 'red', fontWeight: 'bold'}}>
-                    {password === confirmPassword ? 'Password is matched' : 'Passwords do not match'}
-                </p>
-                )}
+          <Input
+            name="repassword"
+            type="password"
+            showPassword={showPassword}
+            setShowPassword={setShowPassword}
+            placeholder="Confirm Password"
+            {...register("repassword", {
+              required: "Please confirm your password",
+              onBlur: () => trigger("password"),
+            })}
+            error={errors.repassword?.message}
+           
+          />
 
-                <button className="custom-button">Submit</button>
-                <p className="info-message">Already have an account? <Link to="/login" style={{color: 'darkred', textDecoration: 'none', fontWeight:'bold'}}>Login</Link></p>
+          {confirmPassword && password && (
+            <p
+              style={{
+                color: password === confirmPassword ? "darkgreen" : "red",
+                fontWeight: "bold",
+              }}
+            >
+              {password === confirmPassword
+                ? "Password is matched"
+                : "Passwords do not match"}
+            </p>
+          )}
 
-            </form>
+          <button
+            type="submit"
+            className="custom-button"
+            disabled={loading}
+          >
+            {loading ? "⏳ Registering..." : "Submit"}
+          </button>
 
-            {message && <p className="message">{message}</p>}
-            </div>
-        </div>
-    );
+          <p className="info-message">
+            Already have an account?{" "}
+            <Link
+              to="/login"
+              style={{ color: "darkred", textDecoration: "none", fontWeight: "bold" }}
+            >
+              Login
+            </Link>
+          </p>
+        </form>
+
+        {message && <p className="message">{message}</p>}
+      </div>
+    </div>
+  );
 }
 
 export default Register;

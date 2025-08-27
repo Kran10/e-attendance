@@ -1,11 +1,11 @@
 import'./Input.css';
-import { EyeInvisibleOutlined, EyeOutlined } from '@ant-design/icons';
+import { CheckCircleFilled, CheckCircleOutlined, CheckSquareFilled, CheckSquareOutlined, EyeInvisibleOutlined, EyeOutlined, GoogleSquareFilled, UpSquareOutlined } from '@ant-design/icons';
 import {useState} from 'react';
 
 function Input({type='text', name, error,  showPassword, setShowPassword, placeholder, value, onChange, ...rest}){
     
     
-    const isPasswordField=name.toLowerCase()==="password" || name.toLowerCase()==="repassword";
+    const isPasswordField=name.toLowerCase()==="password" || name.toLowerCase()==="repassword" ;
     const togglePassword=()=>setShowPassword((val)=>!val);
     return(
         <div 
@@ -22,13 +22,12 @@ function Input({type='text', name, error,  showPassword, setShowPassword, placeh
         />
         
         {isPasswordField && (
-        <span
-        
+        <div
         className='password-toggle'
           onClick={togglePassword}
         >
-          {showPassword ? <EyeInvisibleOutlined /> : <EyeOutlined />}
-        </span>
+          {showPassword ? <>< CheckSquareFilled /><span>Hide Password</span></> : <><CheckSquareOutlined/><span>Show Password</span></>}
+        </div>
       )}
         <div className='error-text'>
             {error?error:'\u00A0'}

@@ -1,4 +1,4 @@
-package com.krn.e_attendance.model;
+package com.krn.e_attendance.auth.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Data;
@@ -28,9 +28,4 @@ public class User {
 	@NotBlank(message="Password is required")
 	private String password;
 	
-	public User(String username, String password, String email) {
-		this.username=username;
-		this.password=password;
-		this.email=email;
-	}
 }
